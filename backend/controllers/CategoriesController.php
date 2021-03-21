@@ -2,13 +2,14 @@
 
 namespace backend\controllers;
 
-use backend\models\categories\entity\CategoriesService;
+use backend\models\categories\CategoriesService;
 use Yii;
-use backend\models\categories\Categories;
+use common\models\Categories;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * CategoriesController implements the CRUD actions for Categories model.
@@ -31,31 +32,14 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Lists all Categories models.
-     * @return mixed
+     * @param $categories
+     * @return string
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Categories::find(),
-        ]);
-
+        $categories = CategoriesService::getInstance()->getLists();
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Categories model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        $model = CategoriesService::getInstance()->findById($id);
-        return $this->render('view', [
-            'model' => $model,
+            'categories' => $categories,
         ]);
     }
 
@@ -66,14 +50,21 @@ class CategoriesController extends Controller
      */
     public function actionCreate()
     {
-        $data = Yii::$app->request->post();
-        $model = CategoriesService::getInstance()->create($data);
-        if (Yii::$app->request->isPost) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $status = false;
+        $json = array();
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $model = CategoriesService::getInstance()->create($data);
+            if ($model) {
+                $status = true;
+                $json = $model;
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
         }
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return [
+            'status' => $status,
+            'json' => $json
+        ];
     }
 
     /**
@@ -85,14 +76,21 @@ class CategoriesController extends Controller
      */
     public function actionUpdate($id)
     {
-        $data = Yii::$app->request->post();
-        $model = CategoriesService::getInstance()->update($id, $data);
-        if (Yii::$app->request->isPost) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $status = false;
+        $json = array();
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $model = CategoriesService::getInstance()->update($id, $data);
+            if ($model) {
+                $status = true;
+                $json = $model;
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
         }
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return [
+            'status' => $status,
+            'json' => $json
+        ];
     }
 
     /**
@@ -104,25 +102,16 @@ class CategoriesController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->request->isPost) {
-            CategoriesService::getInstance()->delete($id);
+        $status = false;
+        if (Yii::$app->request->isAjax) {
+            $model = CategoriesService::getInstance()->delete($id);
+            if ($model) {
+                $status = true;
+            }
+            Yii::$app->response->format = Response::FORMAT_JSON;
         }
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Categories model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Categories the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Categories::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
+        return [
+            'status' => $status
+        ];
     }
 }

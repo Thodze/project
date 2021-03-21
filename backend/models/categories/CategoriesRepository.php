@@ -1,10 +1,11 @@
 <?php
-namespace backend\models\categories\entity;
+namespace backend\models\categories;
 
+use common\models\Products;
 use Yii;
 use backend\components\Repository;
 use backend\components\RepositoryInterface;
-use backend\models\categories\Categories;
+use common\models\Categories;
 use yii\web\NotFoundHttpException;
 
 class CategoriesRepository extends Repository implements RepositoryInterface
@@ -13,6 +14,14 @@ class CategoriesRepository extends Repository implements RepositoryInterface
      * @var $self
      */
     protected static $self;
+
+    /**
+     * @return Categories[]
+     */
+    public function getLists()
+    {
+        return Categories::find()->orderBy(['id' => 'DESC'])->asArray()->all();
+    }
 
     /**
      * @param $id
@@ -31,7 +40,7 @@ class CategoriesRepository extends Repository implements RepositoryInterface
     {
         $model = new Categories();
         if (Yii::$app->request->isPost) {
-            $model->name = $data['Categories']['name'];
+            $model->name = $data['name'];
             $model->save();
             return $model;
         }
@@ -47,7 +56,7 @@ class CategoriesRepository extends Repository implements RepositoryInterface
     {
         $model = Categories::findOne($id);
         if ($model && Yii::$app->request->isPost) {
-            $model->name = $data['Categories']['name'];
+            $model->name = $data['name'];
             $model->save();
             return $model;
         }
@@ -66,5 +75,14 @@ class CategoriesRepository extends Repository implements RepositoryInterface
             ->createCommand()
             ->delete('categories', ['id' => $id])
             ->execute();
+    }
+
+    /**
+     * @param $id
+     * @return int|string
+     */
+    public function getCountProducts($id)
+    {
+        return Products::find()->where(['id_cat' => $id])->count();
     }
 }

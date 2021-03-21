@@ -7,9 +7,9 @@ use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use backend\models\users\LoginForm;
-use backend\models\users\RegisterForm;
-use backend\models\users\VerifyEmailForm;
+use common\models\LoginForm;
+use common\models\RegisterForm;
+use common\models\VerifyEmailForm;
 
 /**
  * Site controller
@@ -101,48 +101,6 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
-    }
-
-    /**
-     * Register action
-     *
-     * @return string
-     */
-    public function actionRegister()
-    {
-        $model = new RegisterForm();
-        $this->layout = 'blank';
-        if ($model->load(Yii::$app->request->post()) && $model->register()) {
-
-        }
-        return $this->render('register', [
-            'model' => $model
-        ]);
-    }
-
-    /**
-     * Verify email address
-     *
-     * @param string $token
-     * @throws BadRequestHttpException
-     * @return yii\web\Response
-     */
-    public function actionVerifyEmail($token)
-    {
-        try {
-            $model = new VerifyEmailForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-        if ($user = $model->verifyEmail()) {
-            if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
-                return $this->goHome();
-            }
-        }
-
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         return $this->goHome();
     }
 }

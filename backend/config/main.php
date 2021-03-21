@@ -17,7 +17,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'backend\models\users\User',
+            'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => [
                 'name' => '_identity-backend',
@@ -54,6 +54,10 @@ return [
                 '<controller>/<action>/<id:\d+>' => '<controller>/<action>',
             ],
         ],
+
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ]
 
     ],
     'params' => $params,

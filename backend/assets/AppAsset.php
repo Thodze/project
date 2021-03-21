@@ -19,6 +19,7 @@ class AppAsset extends AssetBundle
         'css/sb-admin-2.min.css',
     ];
     public $js = [
+        'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js',
         'vendor/jquery-easing/jquery.easing.min.js',
         'js/sb-admin-2.min.js',
         'js/app.js'

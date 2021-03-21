@@ -1,5 +1,5 @@
 <?php
-namespace backend\models\categories\entity;
+namespace backend\models\categories;
 
 use Yii;
 use backend\components\Service;
@@ -13,8 +13,15 @@ class CategoriesService extends Service
     protected static $self;
 
     /**
+     * @return \common\models\Categories[]
+     */
+    public function getLists()
+    {
+        return CategoriesRepository::getInstance()->getLists();
+    }
+    /**
      * @param $id
-     * @return \backend\models\categories\Categories|null
+     * @return \common\models\Categories|null
      */
     public function findById($id)
     {
@@ -23,17 +30,21 @@ class CategoriesService extends Service
 
     /**
      * @param $data
-     * @return \backend\models\categories\Categories
+     * @return \common\models\Categories
      */
     public function create($data)
     {
-        return CategoriesRepository::getInstance()->create($data);
+        try {
+            return CategoriesRepository::getInstance()->create($data);
+        } catch (\Exception $exception) {
+            throw new NotFoundHttpException();
+        }
     }
 
     /**
      * @param $id
      * @param $data
-     * @return \backend\models\categories\Categories|null
+     * @return \common\models\Categories|null
      */
     public function update($id, $data)
     {
@@ -43,9 +54,19 @@ class CategoriesService extends Service
     /**
      * @param $id
      * @return int
+     * @throws \yii\db\Exception
      */
     public function delete($id)
     {
         return CategoriesRepository::getInstance()->delete($id);
+    }
+
+    /**
+     * @param $id
+     * @return int|string
+     */
+    public function getCountProducts($id)
+    {
+        return CategoriesRepository::getInstance()->getCountProducts($id);
     }
 }
