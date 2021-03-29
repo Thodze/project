@@ -1,8 +1,7 @@
 <?php
-namespace backend\models\products;
+namespace backend\models\departments;
 
 use common\models\Departments;
-use common\models\Employees;
 use common\models\Products;
 use Yii;
 use backend\components\Repository;
@@ -10,7 +9,7 @@ use backend\components\RepositoryInterface;
 use common\models\Categories;
 use yii\web\NotFoundHttpException;
 
-class ProductsRepository extends Repository implements RepositoryInterface
+class DepartmentsRepository extends Repository implements RepositoryInterface
 {
     /**
      * @var $self
@@ -22,34 +21,27 @@ class ProductsRepository extends Repository implements RepositoryInterface
      */
     public function getLists()
     {
-        return Products::find()->orderBy(['id' => 'DESC'])->asArray()->all();
+        return Departments::find()->orderBy(['id' => 'DESC'])->asArray()->all();
     }
 
     /**
      * @param $id
-     * @return Products|null
+     * @return Categories|null
      */
     public function findById($id)
     {
-        return Products::findOne($id);
+        return Departments::findOne($id);
     }
 
     /**
      * @param $data
-     * @return Products
+     * @return Categories
      */
     public function create($data)
     {
-        $model = new Products();
+        $model = new Departments();
         if (Yii::$app->request->isPost) {
             $model->name = $data['name'];
-            $model->published = $data['published'];
-            $model->price = $data['price'];
-            $model->total = $data['total'];
-            $model->id_cat = $data['id_category'];
-            $model->description = $data['description'];
-            $model->start_date = $data['start_date'];
-            $model->update_date = $data['update_date'];
             $model->save();
             return $model;
         }
@@ -59,20 +51,13 @@ class ProductsRepository extends Repository implements RepositoryInterface
     /**
      * @param $id
      * @param $data
-     * @return Products|null
+     * @return Categories|null
      */
     public function update($id, $data)
     {
-        $model = Products::findOne($id);
+        $model = Departments::findOne($id);
         if ($model && Yii::$app->request->isPost) {
             $model->name = $data['name'];
-            $model->published = $data['published'];
-            $model->price = $data['price'];
-            $model->total = $data['total'];
-            $model->id_cat = $data['id_category'];
-            $model->description = $data['description'];
-            $model->start_date = $data['start_date'];
-            $model->update_date = $data['update_date'];
             $model->save();
             return $model;
         }
@@ -89,7 +74,7 @@ class ProductsRepository extends Repository implements RepositoryInterface
         return Yii::$app
             ->db
             ->createCommand()
-            ->delete('products', ['id' => $id])
+            ->delete('departments', ['id' => $id])
             ->execute();
     }
 }

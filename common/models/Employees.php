@@ -57,7 +57,7 @@ class Employees extends \yii\db\ActiveRecord
             'address' => 'Address',
             'phone' => 'Phone',
             'mail' => 'Mail',
-            'id_department' => 'Id Department',
+            'id_department' => 'Department',
         ];
     }
 }

@@ -1,11 +1,11 @@
 <?php
-namespace backend\models\orders;
+namespace backend\models\departments;
 
 use Yii;
 use backend\components\Service;
 use yii\web\NotFoundHttpException;
 
-class OrdersService extends Service
+class DepartmentsService extends Service
 {
     /**
      * @var $self
@@ -13,29 +13,29 @@ class OrdersService extends Service
     protected static $self;
 
     /**
-     * @return \common\models\Products[]
+     * @return \common\models\Categories[]
      */
     public function getLists()
     {
-        return OrdersRepository::getInstance()->getLists();
+        return DepartmentsRepository::getInstance()->getLists();
     }
     /**
      * @param $id
-     * @return \common\models\Products|null
+     * @return \common\models\Categories|null
      */
     public function findById($id)
     {
-        return OrdersRepository::getInstance()->findById($id);
+        return DepartmentsRepository::getInstance()->findById($id);
     }
 
     /**
      * @param $data
-     * @return \common\models\Products
+     * @return \common\models\Categories
      */
     public function create($data)
     {
         try {
-            return OrdersRepository::getInstance()->create($data);
+            return DepartmentsRepository::getInstance()->create($data);
         } catch (\Exception $exception) {
             throw new NotFoundHttpException();
         }
@@ -44,11 +44,11 @@ class OrdersService extends Service
     /**
      * @param $id
      * @param $data
-     * @return \common\models\Products|null
+     * @return \common\models\Categories|null
      */
     public function update($id, $data)
     {
-        return OrdersRepository::getInstance()->update($id, $data);
+        return DepartmentsRepository::getInstance()->update($id, $data);
     }
 
     /**
@@ -58,7 +58,7 @@ class OrdersService extends Service
      */
     public function delete($id)
     {
-        return OrdersRepository::getInstance()->delete($id);
+        return DepartmentsRepository::getInstance()->delete($id);
     }
 
     /**
@@ -67,6 +67,6 @@ class OrdersService extends Service
      */
     public function getCountProducts($id)
     {
-        return EmployeesRepository::getInstance()->getCountProducts($id);
+        return DepartmentsRepository::getInstance()->getCountProducts($id);
     }
 }

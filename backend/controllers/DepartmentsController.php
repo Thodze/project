@@ -2,10 +2,9 @@
 
 namespace backend\controllers;
 
-use backend\models\categories\CategoriesService;
-use backend\models\products\ProductsService;
+use backend\models\departments\DepartmentsService;
 use Yii;
-use common\models\Categories;
+use common\models\Departments;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -15,7 +14,7 @@ use yii\web\Response;
 /**
  * CategoriesController implements the CRUD actions for Categories model.
  */
-class ProductsController extends Controller
+class DepartmentsController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -38,11 +37,9 @@ class ProductsController extends Controller
      */
     public function actionIndex()
     {
-        $products = ProductsService::getInstance()->getLists();
-        $categories = CategoriesService::getInstance()->getLists();
+        $departments = DepartmentsService::getInstance()->getLists();
         return $this->render('index', [
-            'products' => $products,
-            'categories' => $categories
+            'departments' => $departments,
         ]);
     }
 
@@ -57,7 +54,7 @@ class ProductsController extends Controller
         $json = array();
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
-            $model = ProductsService::getInstance()->create($data);
+            $model = DepartmentsService::getInstance()->create($data);
             if ($model) {
                 $status = true;
                 $json = $model;
@@ -83,7 +80,7 @@ class ProductsController extends Controller
         $json = array();
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
-            $model = ProductsService::getInstance()->update($id, $data);
+            $model = DepartmentsService::getInstance()->update($id, $data);
             if ($model) {
                 $status = true;
                 $json = $model;
@@ -107,7 +104,7 @@ class ProductsController extends Controller
     {
         $status = false;
         if (Yii::$app->request->isAjax) {
-            $model = ProductsService::getInstance()->delete($id);
+            $model = DepartmentsService::getInstance()->delete($id);
             if ($model) {
                 $status = true;
             }

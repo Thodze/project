@@ -49,6 +49,13 @@
             <span>Categories</span></a>
     </li>
 
+    <!-- Nav Item - Departments -->
+    <li class="nav-item <?= Yii::$app->controller->id == 'departments' ? 'active' : '' ?>">
+        <a class="nav-link" href="<?= Url::to(['/departments']) ?>">
+            <i class="fas fa-building"></i>
+            <span>Departments</span></a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
